@@ -3,6 +3,7 @@ import Navbar from "../Navbar/Navbar";
 // import Modal from '@material-ui/core/Modal';
 import Swal from "sweetalert2";
 import firebase from "firebase";
+import { Link as Routerlink, Redirect } from "react-router-dom";
 
 export default class CompanyProfile extends Component {
   constructor() {
@@ -49,6 +50,7 @@ export default class CompanyProfile extends Component {
         .push(jobData)
         .then(() => {
           Swal.fire("Success", "Job Posted Successfully", "success");
+          
         });
 
         this.setState({
@@ -57,6 +59,7 @@ export default class CompanyProfile extends Component {
             jobDetails: "",
             salary: ""
         })
+        
     }
   };
 
