@@ -1,8 +1,4 @@
-# React Quiz App 
-This project has an admin panel which can make quizes and assign them to users, and a User panel where users can login and give their assign quizzes. Users and admin can also see marks of each Quiz and Student respectively.
 
-# For Live Demo 
-[Quiz App](https://react-myquiz-app.firebaseapp.com/).
 
 
 # 
@@ -58,10 +54,6 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/co
 ### Analyzing the Bundle Size
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
 
 ### Advanced Configuration
 
