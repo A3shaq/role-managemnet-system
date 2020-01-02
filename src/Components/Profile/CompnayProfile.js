@@ -10,10 +10,10 @@ class CompanyProfile extends Component {
     this.props.history.push("/jobs");
   };
   myJobsPage = () => {
-    this.props.history.push("myjobs");
+    this.props.history.push("/myjobs");
   };
   allStudents =()=>{
-    this.props.history.push("/students")
+    this.props.history.push("/allstudents")
   }
   render() {
     return (
