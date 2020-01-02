@@ -3,11 +3,12 @@ import { withRouter } from "react-router-dom";
 
 import Navbar from "../Navbar/Navbar";
 import firebase from "firebase";
-import Card from '../Card/CardWraper'
+import Card from "../Card/CardWraper";
+import Swal from "sweetalert2";
 
 let db = firebase.database();
 
- class Myjobs extends Component {
+class Myjobs extends Component {
   constructor() {
     super();
     this.state = {
@@ -16,11 +17,18 @@ let db = firebase.database();
   }
   componentDidMount() {
     this.getPostData();
-    
   }
 
-  deleteJobs(){
-    console.log("this", this)
+  deleteJobs=(jobID)=> {
+    console.log("this", jobID);
+    db.ref()
+      .child(`jobs/${jobID}`)
+      .remove().then(()=>{
+
+        Swal.fire("This", "Job Post Has been Deleted", "success");
+     
+      })
+      this.getPostData();
   }
 
   getPostData() {
@@ -34,14 +42,14 @@ let db = firebase.database();
           let response = snapshot.val();
           let result = [];
           for (const job in response) {
-            console.log("job key",job)
+            console.log("job key", job);
             if (response[job].uid === currentUser)
-              result =  [...result, { ...response[job], key: job }];
+              result = [...result, { ...response[job], jobID: job }];
           }
           console.log("RESULT", result);
           // let data =[];
           // data.push(result)
-          this.setState({ postsData:result });
+          this.setState({ postsData: result });
         });
     });
   }
@@ -64,7 +72,7 @@ let db = firebase.database();
       <div>
         <Navbar />
         <h2>My jObs</h2>
-        <Card JobsDetails={this.state.postsData} delete={this.deleteJobs}/>
+        <Card JobsDetails={this.state.postsData} delete={this.deleteJobs} />
       </div>
     );
   }

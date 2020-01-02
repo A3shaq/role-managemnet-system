@@ -86,7 +86,7 @@ const CardWrapper = props => {
                   size="small"
                   variant="contained"
                   color="secondary"
-                  onClick={props.delete}
+                  onClick={()=>props.delete(info.jobID)}
                 >
                   Delete
                 </Button>
