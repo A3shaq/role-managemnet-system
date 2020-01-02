@@ -1,44 +1,70 @@
 import React, { Component } from "react";
 import Navbar from "../Navbar/Navbar";
 // import Modal from '@material-ui/core/Modal';
-import Jobs from "../Job/Jobs";
+import { withRouter } from "react-router-dom";
 
-export default class CompanyProfile extends Component {
-  constructor() {
-    super();
-    this.state = {
-      flag: false
-    };
-  }
+// import Jobs from "../Job/Jobs";
 
-  pageChange = ()=>{
-      this.setState({flag:true})
+class CompanyProfile extends Component {
+  jobsPage = () => {
+    this.props.history.push("/jobs");
+  };
+  myJobsPage = () => {
+    this.props.history.push("myjobs");
+  };
+  allStudents =()=>{
+    this.props.history.push("/students")
   }
   render() {
-    let { flag } = this.state;
     return (
       <div>
         {/* {this.renderPostJobs()} */}
         <Navbar />
-        <h2 className="adminHeading">Company Profile</h2>
+        <h2 className="adminHeading">Company Dashboard</h2>
 
-        {flag === true ? (
-          <Jobs  />
-        ) : (
-          <div>
-            {" "}
-            <button
-              className="btn waves-effect waves-light"
-              type="submit"
-              name="action"
-              onClick={this.pageChange}
-            >
-              Job Post
-              <i className="material-icons right"></i>
-            </button>
-          </div>
-        )}
+        <div className="row"> 
+        <div className="col-4">
+        <button
+            className="btn waves-effect waves-light"
+            type="submit"
+            name="action"
+            onClick={this.jobsPage}
+          >
+            Job Post
+            <i className="material-icons right"></i>
+          </button>
+        </div>
+
+
+        <div className="col-4">
+        <button
+            className="btn waves-effect waves-light"
+            type="submit"
+            name="action"
+            onClick={this.myJobsPage}
+          >
+           My JObs
+            <i className="material-icons right"></i>
+          </button>
+        </div>
+
+
+        <div className="col-4">
+        <button
+            className="btn waves-effect waves-light"
+            type="submit"
+            name="action"
+            onClick={this.allStudents}
+          >
+          All Students
+            <i className="material-icons right"></i>
+          </button>
+        </div>
+       
+        </div>
       </div>
     );
   }
 }
+
+export default withRouter(CompanyProfile);

@@ -35,20 +35,25 @@ class Register extends Component {
   }
 
   signUp = () => {
-    const { userName, userEmail, userPassword,selectedRole } = this.state;
+    const { userName, userEmail, userPassword, selectedRole } = this.state;
     console.log(selectedRole.value);
     let role = selectedRole.value;
 
-    if (userName === "" || userEmail === "" || userPassword === "" || role ===null) {
+    if (
+      userName === "" ||
+      userEmail === "" ||
+      userPassword === "" ||
+      role === null
+    ) {
       Swal.fire("Oops...", "please fill the empty fields", "error");
     } else {
       console.log("signUp else");
-      
-      firebase.signUpWithFirebase(userName, userEmail, userPassword,role);
+
+      firebase.signUpWithFirebase(userName, userEmail, userPassword, role);
       console.log("success");
       Swal.fire("Success", "Succesfully Registered", "success");
-      this.setState({ loc: "/" });
-  
+      // this.setState({ loc: "/" });
+      this.props.history.push('/')
     }
   };
 
@@ -102,7 +107,7 @@ class Register extends Component {
             }}
           />
         </div>
-        <div style ={{width: "30%" }}>
+        <div style={{ width: "30%" }}>
           <Select
             // className="form-control inputLogin"
             placeholder="user Role"
@@ -113,7 +118,7 @@ class Register extends Component {
           />
         </div>
 
-        <div className="loginBtn " style={{marginTop :"30px"}}>
+        <div className="loginBtn " style={{ marginTop: "30px" }}>
           <button type="submit" className="btn" onClick={() => this.signUp()}>
             Signup
           </button>
@@ -125,7 +130,7 @@ class Register extends Component {
   }
 
   render() {
-    console.log(this.state.selectedRole)
+    console.log(this.state.selectedRole);
     // if (localStorage.isAuthenticated) {
     //   return <Redirect to="/home" />;
     // }

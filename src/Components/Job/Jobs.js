@@ -3,9 +3,9 @@ import Navbar from "../Navbar/Navbar";
 // import Modal from '@material-ui/core/Modal';
 import Swal from "sweetalert2";
 import firebase from "firebase";
-import { Link as Routerlink, Redirect } from "react-router-dom";
+import {withRouter } from "react-router-dom";
 
-export default class CompanyProfile extends Component {
+class Jobs extends Component {
   constructor() {
     super();
     this.state = {
@@ -24,7 +24,7 @@ export default class CompanyProfile extends Component {
   postJob = () => {
     console.log("postJob");
     let userID = localStorage.getItem("userID");
-    console.log(userID); 
+    console.log(userID);
     let { jobTitle, jobDesignation, jobDetails, salary } = this.state;
     console.log("jobTitle", jobTitle);
     let jobData = {
@@ -32,7 +32,7 @@ export default class CompanyProfile extends Component {
       designation: jobDesignation,
       details: jobDetails,
       salary,
-      uid:userID
+      uid: userID
     };
 
     if (
@@ -50,22 +50,27 @@ export default class CompanyProfile extends Component {
         .push(jobData)
         .then(() => {
           Swal.fire("Success", "Job Posted Successfully", "success");
-          
-        });
 
-        this.setState({
+
+          this.setState({
             jobTitle: "",
             jobDesignation: "",
             jobDetails: "",
             salary: ""
-        })
-        
+          });
+          this.props.history.push("/company")
+        });
+
+     
     }
   };
 
   render() {
     return (
       <div>
+        <Navbar/>
+
+
         <h2 className="adminHeading">Post a Job</h2>
         <div className="row">
           <div className="input-field col  ml-3" style={{ width: "280px" }}>
@@ -129,3 +134,5 @@ export default class CompanyProfile extends Component {
     );
   }
 }
+
+export default withRouter(Jobs)

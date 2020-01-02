@@ -5,11 +5,10 @@ import { Link as Routerlink, Redirect } from "react-router-dom";
 import firebase from "../../Config/firebase";
 
 var roleType = {
-  roleStudent :10,
-  roleCompany:20,
-  roleAdmin :30
-  
-}
+  roleStudent: 10,
+  roleCompany: 20,
+  roleAdmin: 30
+};
 
 class Login extends Component {
   state = {
@@ -23,7 +22,6 @@ class Login extends Component {
   showSignup = () => {
     this.setState({ signup: true });
   };
- 
 
   handleChange(e, key) {
     console.log("handletextChnageeeeeeeeee", key);
@@ -34,7 +32,7 @@ class Login extends Component {
 
   onSubmit = () => {
     const { email, password } = this.state;
-  
+
     if (email === "" || password === null) {
       Swal.fire("Oops...", "please fill the empty fields", "error");
     } else {
@@ -44,47 +42,34 @@ class Login extends Component {
         // userId = id;
         // console.log("userId", userId);
 
-
-
         if (userObj) {
-          console.log("if userObj,uid")
-          localStorage.setItem("userID", userObj.uid)
-        let userNewObj=  Number(userObj.userRole)
-          switch( userNewObj){
-            
-            case roleType.roleStudent:
-              {
-                Swal.fire("Success", "Succesfully Login as student", "success");
-                this.props.history.push("/student")
-                break;
-              }
-              case roleType.roleCompany:
-              {
-                console.log(" roleType.roleStudent")
-                Swal.fire("Success", "Succesfully Login as Company", "success");
-            
-                this.props.history.push("/company")
-                break;
-              }
-              case roleType.roleAdmin:
-              {
-                Swal.fire("Success", "Succesfully Login as student", "success");
-                this.props.history.push("/profile")
-                break;
-              }
-              default:{
-                console.log("default")
-              }
-           
+          console.log("if userObj,uid");
+          localStorage.setItem("userID", userObj.uid);
+          let userNewObj = Number(userObj.userRole);
+          switch (userNewObj) {
+            case roleType.roleStudent: {
+              Swal.fire("Success", "Succesfully Login as student", "success");
+              this.props.history.push("/student");
+              break;
+            }
+            case roleType.roleCompany: {
+              console.log(" roleType.roleStudent");
+              Swal.fire("Success", "Succesfully Login as Company", "success");
 
+              this.props.history.push("/company");
+              break;
+            }
+            case roleType.roleAdmin: {
+              Swal.fire("Success", "Succesfully Login as student", "success");
+              this.props.history.push("/profile");
+              break;
+            }
+            default: {
+              console.log("default");
+            }
           }
-   
-    
-          
         } else {
-
           Swal.fire("Oops...", "Please signup first", "error");
-         
         }
       });
       console.log(userId);
@@ -147,7 +132,6 @@ class Login extends Component {
           <p id="signupText">
             don't have an account?{" "}
             <Routerlink to="/register">Go to Register</Routerlink>
-     
           </p>
         </form>
       </div>
@@ -155,9 +139,8 @@ class Login extends Component {
   };
 
   render() {
-    
-    console.log(this.state)
-    
+    console.log(this.state);
+
     return (
       <div>
         {this.renderLogin()}
