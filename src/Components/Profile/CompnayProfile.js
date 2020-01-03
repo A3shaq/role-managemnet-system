@@ -3,7 +3,7 @@ import Navbar from "../Navbar/Navbar";
 // import Modal from '@material-ui/core/Modal';
 import { withRouter } from "react-router-dom";
 
-// import Jobs from "../Job/Jobs";
+
 
 class CompanyProfile extends Component {
   jobsPage = () => {

@@ -49,7 +49,7 @@ class Login extends Component {
           switch (userNewObj) {
             case roleType.roleStudent: {
               Swal.fire("Success", "Succesfully Login as student", "success");
-              this.props.history.push("/student");
+              this.props.history.push("/students");
               break;
             }
             case roleType.roleCompany: {

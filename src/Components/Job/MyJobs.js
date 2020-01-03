@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 
 import Navbar from "../Navbar/Navbar";
 import firebase from "firebase";
-import Card from "../Card/CardWraper";
+import Card from "../Card/CompanyCard";
 import Swal from "sweetalert2";
 
 let db = firebase.database();

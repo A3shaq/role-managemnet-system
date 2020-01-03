@@ -23,8 +23,9 @@ const useStyles = makeStyles({
   }
 });
 
-const CardWrapper = props => {
+const StudentCard = props => {
   const [jobData, setJobData] = useState([]);
+
   // setJob
 
   //   companyDeleteJobs = () => {
@@ -32,21 +33,25 @@ const CardWrapper = props => {
   //   };
   useEffect(() => {
     if (props) {
-      setJobData(props.JobsDetails);
+      setJobData(props.jobs);
     }
-    console.log("jobData", jobData);
-  }, [props.JobsDetails]);
+    console.log("jobData", props.jobs);
+  }, [props.jobs]);
 
   const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
+  //   const bull = <span className={classes.bullet}>•</span>;
   //   console.log("Wrap: ", props);
   //   console.log("props.JobsDetails.title", props.JobsDetails.title);
-  console.log("jobData,", props);
+  console.log("jobs,", props);
   return (
     <div className="">
       {jobData.map((info, index) => {
         return (
-          <div className="" style={{ margin: "25px 250px ", width: "40%" }}>
+          <div
+            className=""
+            style={{ margin: "25px 250px ", width: "40%" }}
+            key={info.jobID}
+          >
             <Card className={classes.card} key={index}>
               <CardContent>
                 <Typography
@@ -86,9 +91,9 @@ const CardWrapper = props => {
                   size="small"
                   variant="contained"
                   color="secondary"
-                  onClick={()=>props.delete(info.jobID)}
+                    onClick={()=>props.applyNow(info.jobID)}
                 >
-                  Delete
+                  Apply Now
                 </Button>
               </CardActions>
             </Card>
@@ -99,4 +104,4 @@ const CardWrapper = props => {
   );
 };
 
-export default CardWrapper;
+export default StudentCard;

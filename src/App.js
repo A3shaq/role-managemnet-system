@@ -12,8 +12,10 @@ import CompanyProfile from "./Components/Profile/CompnayProfile";
 import StudentProfile from "./Components/Profile/StudentProfile";
 import Myjobs from "./Components/Job/MyJobs";
 import Jobs from "./Components/Job/Jobs";
-import AllStudents from './Components/Students/Student'
+import AllStudents from './Components/Students/Student';
+import AddStudentDetails from './Components/Students/AddStudentDetails'
 // import AllStudents from "/Components/Students/Student";
+import AllJobs from "./Components/Job/AllJobs";
 
 class App extends Component {
   state = {};
@@ -30,6 +32,8 @@ class App extends Component {
             <Route exact path="/myjobs" component={Myjobs} />
             <Route exact path="/allstudents" component={AllStudents} />
             <Route exact path="/students" component={StudentProfile} />
+            <Route exact path="/addstudent/details" component={AddStudentDetails} />
+            <Route exact path="/alljobs" component={AllJobs} />
           </Switch>
         </Router>
       </div>
