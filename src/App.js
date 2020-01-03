@@ -12,7 +12,7 @@ import CompanyProfile from "./Components/Profile/CompnayProfile";
 import StudentProfile from "./Components/Profile/StudentProfile";
 import Myjobs from "./Components/Job/MyJobs";
 import Jobs from "./Components/Job/Jobs";
-import AllStudents from './Components/Students/Student';
+import AllStudents from './Components/Students/AllStudent';
 import AddStudentDetails from './Components/Students/AddStudentDetails'
 // import AllStudents from "/Components/Students/Student";
 import AllJobs from "./Components/Job/AllJobs";

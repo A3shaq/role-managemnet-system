@@ -41,28 +41,42 @@ class AddStudentDetails extends Component {
       Swal.fire("Oops...", "please fill the empty fields", "error");
     } else {
       let user = firebase.auth().currentUser.uid;
-      //   console.log("users", user);
-      let stuDetails = {
-        studExperience,
-        skills,
-        currentDesignation,
-        currentSalary,
-        expectedSalary,
-        uid: user
-      };
+      console.log("userID", user);
       db.ref()
-        .child(`students`)
-        .push(stuDetails)
-        .then(() => {
-          Swal.fire("Success", "Student Added Deteils Successfully", "success");
-        
-        });
-        this.setState({
-          studExperience: "",
-          skills: "",
-          currentDesignation: "",
-          currentSalary: "",
-          expectedSalary: ""
+        .child(`users/${user}`)
+        .once(`value`)
+        .then(currentUserData => {
+          console.log("currentUserData.val()", currentUserData.val());
+          let userData = currentUserData.val();
+          let stuDetails = {
+            studExperience,
+            skills,
+            currentDesignation,
+            currentSalary,
+            expectedSalary,
+            uid: user,
+            userName: userData.userName,
+            email: userData.email
+          };
+
+          db.ref()
+            .child(`students`)
+            .push(stuDetails)
+            .then(() => {
+              Swal.fire(
+                "Success",
+                "Student Added Deteils Successfully",
+                "success"
+              );
+            });
+          this.setState({
+            studExperience: "",
+            skills: "",
+            currentDesignation: "",
+            currentSalary: "",
+            expectedSalary: ""
+          });
+          this.props.history.push("/students");
         });
     }
   };
