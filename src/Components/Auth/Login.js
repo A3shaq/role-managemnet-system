@@ -61,7 +61,7 @@ class Login extends Component {
             }
             case roleType.roleAdmin: {
               Swal.fire("Success", "Succesfully Login as student", "success");
-              this.props.history.push("/profile");
+              this.props.history.push("/admin");
               break;
             }
             default: {
