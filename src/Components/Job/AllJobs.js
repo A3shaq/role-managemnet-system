@@ -50,8 +50,7 @@ class AllJobs extends Component {
 
             let applyDetails = {
               jobID,
-              studDetails: { ...matchedStudent },
-              userName
+              studDetails: { ...matchedStudent }
             };
 
             db.ref()
@@ -62,40 +61,44 @@ class AllJobs extends Component {
                 let appliedJobs = applyJobs.val();
                 if (appliedJobs !== ``) {
                   console.log("applied jobs if");
+                  // db.ref()
+                  //   .child(`jobs/`)
+                  //   .once(`value`)
+                  //   .then(jobs => {
+                  // console.log("jobs", jobs.val());
+                  // let allJobs = jobs.val();
+                  //for (let job in allJobs) {
+                  // console.log("job from jobs node ", job);
+
+                  for (let apply in appliedJobs) {
+                    if (
+                      appliedJobs[apply].jobID === jobID &&
+                      appliedJobs[apply].studDetails.uid === userID
+                    ) {
+                      console.log("you already apply for this job");
+                      Swal.fire(
+                        "Warning",
+                        "You aleardy applied for this job",
+                        "warning"
+                      );
+                      return;
+                    } else {
+                      console.log("Yes you are able to apply for this job");
+                      //   Swal.fire("Success", "Job Post Has been Deleted", "success");
+                    }
+                  }
+                  //}
                   db.ref()
-                    .child(`jobs/`)
-                    .once(`value`)
-                    .then(jobs => {
-                      console.log("jobs", jobs.val());
-                      let allJobs = jobs.val();
-                      //for (let job in allJobs) {
-                      // console.log("job from jobs node ", job);
-                      for (let apply in appliedJobs) {
-                        if (appliedJobs[apply].jobID === jobID) {
-                          console.log("you already apply for this job");
-                          Swal.fire(
-                            "Warning",
-                            "You aleardy applied for this job",
-                            "warning"
-                          );
-                          return;
-                        } else {
-                          console.log("Yes you are able to apply for this job");
-                        //   Swal.fire("Success", "Job Post Has been Deleted", "success");
-                        }
-                      }
-                      //}
-                      db.ref()
-                        .child(`appliedJobs/`)
-                        .push(applyDetails)
-                        .then(() => {
-                          Swal.fire(
-                            "Good",
-                            "You applied Successfully on this Job",
-                            "success"
-                          );
-                        });
+                    .child(`appliedJobs/`)
+                    .push(applyDetails)
+                    .then(() => {
+                      Swal.fire(
+                        "Good",
+                        "You applied Successfully on this Job",
+                        "success"
+                      );
                     });
+                  // });
                 } else {
                   console.log("applied jobs else");
                 }
