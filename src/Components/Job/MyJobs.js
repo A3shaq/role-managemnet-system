@@ -12,45 +12,95 @@ class Myjobs extends Component {
   constructor() {
     super();
     this.state = {
-      postsData: []
+      getJobsData: []
     };
   }
   componentDidMount() {
-    this.getPostData();
+    // this.getPostData();
+    this.getMyJobs();
   }
 
-  deleteJobs=(jobID)=> {
+  deleteJobs = jobID => {
     console.log("this", jobID);
     db.ref()
       .child(`jobs/${jobID}`)
-      .remove().then(()=>{
+      .remove()
+      .then(() => {
+        Swal.fire("Company", "Job Post Has been Deleted", "success");
+      });
+    // this.getPostData();
+    this.getMyJobs();
+  };
 
-        Swal.fire("This", "Job Post Has been Deleted", "success");
-     
-      })
-      this.getPostData();
-  }
+  getMyJobs = () => {
+    // let user = firebase.auth().currentUser
+    // let user = localStorage.getItem("userID")
+
+    this.getCurrentUser().then(currentUser => {
+      console.log("userId", currentUser);
+      db.ref()
+        .child(`jobs/`)
+        .once("value")
+        .then(async jobs => {
+          let allJobs = jobs.val();
+          console.log("all jobs", allJobs);
+          let allJobsAndAppliedStudentDetails = [];
+          for (let job in allJobs) {
+            //this.getAppliedJobs(job);
+            let appliedjobs = await this.getAppliedJobs(job);
+            console.log("appliedjobs studDetails ", appliedjobs);
+            if (allJobs[job].uid === currentUser) {
+              allJobsAndAppliedStudentDetails = [
+                { ...allJobs[job], appliedjobs, jobID: job },
+                ...allJobsAndAppliedStudentDetails
+              ];
+            }
+          }
+          this.setState({ getJobsData: allJobsAndAppliedStudentDetails });
+        });
+    });
+  };
+
+  getAppliedJobs = jobId => {
+    console.log("getAppliedJobs", jobId);
+
+    return db
+      .ref()
+      .child("appliedJobs/")
+      .once("value")
+      .then(allAppliedJobs => {
+        allAppliedJobs = allAppliedJobs.val();
+        let applliedJobs = [];
+        for (let applyJob in allAppliedJobs) {
+          if (allAppliedJobs[applyJob].jobID === jobId) {
+            applliedJobs = [
+              { ...allAppliedJobs[applyJob].studDetails },
+              ...applliedJobs
+            ];
+          }
+        }
+        return applliedJobs;
+      });
+  };
 
   getPostData() {
     this.getCurrentUser().then(currentUser => {
-      console.log("currentUser", currentUser);
-      db.ref()
-        .child(`jobs/`)
-        .once(`value`)
-        .then(snapshot => {
-          console.log(snapshot.val());
-          let response = snapshot.val();
-          let result = [];
-          for (const job in response) {
-            console.log("job key", job);
-            if (response[job].uid === currentUser)
-              result = [...result, { ...response[job], jobID: job }];
-          }
-          console.log("RESULT", result);
-          // let data =[];
-          // data.push(result)
-          this.setState({ postsData: result });
-        });
+      // console.log("currentUser", currentUser);
+      // db.ref()
+      //   .child(`jobs/`)
+      //   .once(`value`)
+      //   .then(snapshot => {
+      //     console.log(snapshot.val());
+      //     let response = snapshot.val();
+      //     let result = [];
+      //     for (const job in response) {
+      //       console.log("job key", job);
+      //       if (response[job].uid === currentUser)
+      //         result = [{ ...response[job], jobID: job }, ...result];
+      //     }
+      //     console.log("RESULT", result);
+      //     this.setState({ postsData: result });
+      //   });
     });
   }
 
@@ -67,12 +117,13 @@ class Myjobs extends Component {
   }
 
   render() {
-    console.log("this.state,postsData", this.state.postsData);
+    let { getJobsData } = this.state;
+    console.log("getJobsData", getJobsData);
     return (
       <div>
         <Navbar />
         <h2>My jObs</h2>
-        <Card JobsDetails={this.state.postsData} delete={this.deleteJobs} />
+        <Card jobData={getJobsData} delete={this.deleteJobs} />
       </div>
     );
   }

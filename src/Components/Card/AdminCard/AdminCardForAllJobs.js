@@ -23,28 +23,24 @@ const useStyles = makeStyles({
   }
 });
 
-const AdminCardForAllStudents = props => {
-  const [allStudents, setAllStudents] = useState([]);
+const AdminCardForAllJobs = props => {
+  const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
     if (props) {
-      setAllStudents(props.allStudents);
+      setJobs(props.jobs);
     }
-    console.log("allStudents", props.allStudents);
-  }, [props.allStudents]);
+    console.log("jobs", jobs);
+  }, [props.jobs]);
 
   const classes = useStyles();
 
-  console.log("props,", props);
+  console.log("jobs,", props);
   return (
     <div className="">
-      {allStudents.map((stuInfo, index) => {
+      {jobs.map((jobInfo, index) => {
         return (
-          <div
-            className=""
-            style={{ margin: "25px 250px ", width: "40%" }}
-            key={index}
-          >
+          <div className="" style={{ margin: "25px 250px ", width: "40%" }}>
             <Card className={classes.card} key={index}>
               <CardContent>
                 <Typography
@@ -53,28 +49,34 @@ const AdminCardForAllStudents = props => {
                   gutterBottom
                 >
                   <Typography className={classes.pos} variant="h6">
-                    Student Name
+                    Company Owner
                   </Typography>
                   <Typography className={classes.pos} color="textSecondary">
-                    {stuInfo.userName}
+                    {jobInfo.userName}
                   </Typography>
-                  <Typography className={classes.pos} variant="h6">
-                    Student Email
-                  </Typography>
+                </Typography>
+                <Typography className={classes.pos} variant="h6">
+                  Job Title
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  {jobInfo.title}
+                </Typography>
 
-                  <Typography className={classes.pos} color="textSecondary">
-                    {stuInfo.email}
-                  </Typography>
+                <Typography className={classes.pos} variant="h6">
+                  Job Designation
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  {jobInfo.designation}
                 </Typography>
               </CardContent>
               <CardActions>
-              <Button
+                <Button
                   size="small"
                   variant="contained"
                   color="secondary"
-                    onClick={()=>props.deleteStudent(stuInfo.uid)}
+                  onClick={() => props.deleteJobs(jobInfo.jobId)}
                 >
-                Delete
+                  Delete
                 </Button>
               </CardActions>
             </Card>
@@ -85,4 +87,4 @@ const AdminCardForAllStudents = props => {
   );
 };
 
-export default AdminCardForAllStudents;
+export default AdminCardForAllJobs;

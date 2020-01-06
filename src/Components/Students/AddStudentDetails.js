@@ -22,7 +22,7 @@ class AddStudentDetails extends Component {
     this.setState({ [key]: e.target.value });
   }
 
-  addStudentDetails = () => {
+  addStudentDetails = async () => {
     let {
       studExperience,
       skills,
@@ -42,43 +42,69 @@ class AddStudentDetails extends Component {
     } else {
       let user = firebase.auth().currentUser.uid;
       console.log("userID", user);
-      db.ref()
-        .child(`users/${user}`)
-        .once(`value`)
-        .then(currentUserData => {
-          console.log("currentUserData.val()", currentUserData.val());
-          let userData = currentUserData.val();
-          let stuDetails = {
-            studExperience,
-            skills,
-            currentDesignation,
-            currentSalary,
-            expectedSalary,
-            uid: user,
-            userName: userData.userName,
-            email: userData.email
-          };
+      let getStudentDetail = await this.getStudents(user);
+      console.log("getStudentDetail", getStudentDetail);
+      if (getStudentDetail === true) {
+        db.ref()
+          .child(`users/${user}`)
+          .once(`value`)
+          .then(currentUserData => {
+            console.log("currentUserData.val()", currentUserData.val());
+            let userData = currentUserData.val();
+            let stuDetails = {
+              studExperience,
+              skills,
+              currentDesignation,
+              currentSalary,
+              expectedSalary,
+              uid: user,
+              userName: userData.userName,
+              email: userData.email
+            };
 
-          db.ref()
-            .child(`students`)
-            .push(stuDetails)
-            .then(() => {
-              Swal.fire(
-                "Success",
-                "Student Added Deteils Successfully",
-                "success"
-              );
+            db.ref()
+              .child(`students`)
+              .push(stuDetails)
+              .then(() => {
+                Swal.fire(
+                  "Success",
+                  "Student Added Deteils Successfully",
+                  "success"
+                );
+              });
+            this.setState({
+              studExperience: "",
+              skills: "",
+              currentDesignation: "",
+              currentSalary: "",
+              expectedSalary: ""
             });
-          this.setState({
-            studExperience: "",
-            skills: "",
-            currentDesignation: "",
-            currentSalary: "",
-            expectedSalary: ""
+            this.props.history.push("/students");
           });
-          this.props.history.push("/students");
-        });
+      } else {
+        Swal.fire(
+          "Oops...",
+          "this student details is already exist",
+          "warning"
+        );
+      }
     }
+  };
+
+  getStudents = stuId => {
+    return db
+      .ref()
+      .child("students/")
+      .once("value")
+      .then(students => {
+        students = students.val();
+        for (let student in students) {
+          if (students[student].uid === stuId) {
+            return false;
+          }
+        }
+        return true;
+      });
   };
 
   render() {

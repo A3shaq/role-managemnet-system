@@ -3,7 +3,7 @@ import Navbar from "../Navbar/Navbar";
 // import Modal from '@material-ui/core/Modal';
 import Swal from "sweetalert2";
 import firebase from "firebase";
-import {withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 class Jobs extends Component {
   constructor() {
@@ -23,17 +23,9 @@ class Jobs extends Component {
 
   postJob = () => {
     console.log("postJob");
-    let userID = localStorage.getItem("userID");
-    console.log(userID);
     let { jobTitle, jobDesignation, jobDetails, salary } = this.state;
-    console.log("jobTitle", jobTitle);
-    let jobData = {
-      title: jobTitle,
-      designation: jobDesignation,
-      details: jobDetails,
-      salary,
-      uid: userID
-    };
+    let userID = firebase.auth().currentUser.uid;
+    console.log(userID);
 
     if (
       jobTitle === "" ||
@@ -46,30 +38,45 @@ class Jobs extends Component {
       firebase
         .database()
         .ref()
-        .child(`jobs`)
-        .push(jobData)
-        .then(() => {
-          Swal.fire("Success", "Job Posted Successfully", "success");
+        .child(`users/${userID}`)
+        .once("value")
+        .then(currentUser => {
+          currentUser = currentUser.val();
+          console.log("currentUser", currentUser);
+          // console.log("jobTitle", jobTitle);
+          let jobData = {
+            title: jobTitle,
+            designation: jobDesignation,
+            details: jobDetails,
+            salary,
+            uid: userID,
+            userName: currentUser.userName
+          };
 
+          firebase
+            .database()
+            .ref()
+            .child(`jobs`)
+            .push(jobData)
+            .then(() => {
+              Swal.fire("Success", "Job Posted Successfully", "success");
 
-          this.setState({
-            jobTitle: "",
-            jobDesignation: "",
-            jobDetails: "",
-            salary: ""
-          });
-          this.props.history.push("/company")
+              this.setState({
+                jobTitle: "",
+                jobDesignation: "",
+                jobDetails: "",
+                salary: ""
+              });
+              this.props.history.push("/company");
+            });
         });
-
-     
     }
   };
 
   render() {
     return (
       <div>
-        <Navbar/>
-
+        <Navbar />
 
         <h2 className="adminHeading">Post a Job</h2>
         <div className="row">
@@ -135,4 +142,4 @@ class Jobs extends Component {
   }
 }
 
-export default withRouter(Jobs)
+export default withRouter(Jobs);

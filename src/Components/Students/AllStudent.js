@@ -28,7 +28,7 @@ class AllStudents extends Component {
         let stuData = students.val();
         let result = [];
         for (let Student in stuData) {
-          result = [...result, { ...stuData[Student] }];
+          result = [{ ...stuData[Student] }, ...result];
         }
         this.setState({
           studentsData: result

@@ -20,62 +20,76 @@ class AdminAllCompanies extends Component {
     this.getAllCompanies();
   }
 
-  deleteCompany = uid => {
-    console.log("deleteCompanyID", uid);
-    // db.ref()
+  deleteCompany = async companyId => {
+    console.log("companyId", companyId);
+    let deletedJobs = await this.delelteCompanyJobs(companyId);
+    this.deleteAppliedJobs(deletedJobs);
+    db.ref()
+      .child(`users/${companyId}`)
+      .remove()
+      .then(() => {
+        console.log("company has been deketed from users node");
+        Swal.fire("Admin", " this Company has been deleted", "success");
+        this.getAllCompanies();
+      });
+  };
 
+  deleteAppliedJobs = deletedJobs => {
+    console.log("deleteAppliedJobs", deletedJobs);
     db.ref()
       .child(`appliedJobs/`)
       .once("value")
-      .then(allApplliedJobs => {
-        allApplliedJobs = allApplliedJobs.val();
-        console.log("allAppliedJobs", allApplliedJobs);
-        let applyArray = [];
-        for (let currentApplyJob in allApplliedJobs) {
-          if (allApplliedJobs[currentApplyJob].studDetails.uid === uid) {
-            applyArray = [
-              ...applyArray,
-              { ...allApplliedJobs[currentApplyJob] }
-            ];
+      .then(appliedJobs => {
+        appliedJobs = appliedJobs.val();
+        console.log("appliedJobs,", appliedJobs);
+        // for (let jobId of deletedJobs) {
+        for (let applyJob in appliedJobs) {
+          // if (appliedJobs[applyJob].jobID === jobId) {
+          if (deletedJobs.includes(appliedJobs[applyJob].jobID)) {
             db.ref()
-              .child(
-                `appliedJobs/${allApplliedJobs[currentApplyJob].studDetails.uid}`
-              )
-              .remove().then(()=>{
-
-                db.ref()
-                .child(`jobs/`)
-                .once("value")
-                .then(allJobs => {
-                  allJobs = allJobs.val();
-                  console.log("allJobs", allJobs);
-                  for (let currentJob in allJobs) {
-                    if (allJobs[currentJob].uid === uid) {
-                      console.log("yes jobs has been deleted");
-                      db.ref()
-                        .child(`jobs/${uid}`)
-                        .remove();
-                    }
-                  }
-                });
-      
-
-              })
-          } else {
-            console.log("there is no Job of this user");
+              .child(`appliedJobs/${applyJob}`)
+              .remove()
+              .then(() => {
+                console.log("delted applied jobs");
+               
+              });
           }
+
+          // }
         }
-
-        console.log("applyArray", applyArray);
-
-      
-        db.ref()
-          .child(`users/${uid}`)
-          .remove()
-          .then(() => {
-            console.log("this user/Compnay has been deleted");
-          });
+        // }
       });
+  };
+
+  delelteCompanyJobs = companyId => {
+    return new Promise((resolve, reject) => {
+      console.log("delelteCompanyJobs", companyId);
+      let deltedJobsId = [];
+      db.ref()
+        .child(`jobs/`)
+        .once("value")
+        .then(allJobs => {
+          allJobs = allJobs.val();
+
+          for (let job in allJobs) {
+            if (allJobs[job].uid === companyId) {
+              deltedJobsId.push(job);
+              db.ref()
+                .child(`jobs/${job}`)
+                .remove()
+                .then(() => {
+                  console.log("deleted jobs");
+                });
+            }
+          }
+          console.log("deltedJobsId", deltedJobsId);
+
+          resolve(deltedJobsId);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   };
 
   getAllCompanies() {

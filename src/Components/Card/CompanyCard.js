@@ -32,10 +32,10 @@ const CompanyCard = props => {
   //   };
   useEffect(() => {
     if (props) {
-      setJobData(props.JobsDetails);
+      setJobData(props.jobData);
     }
     console.log("jobData", jobData);
-  }, [props.JobsDetails]);
+  }, [props.jobData]);
 
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
@@ -46,8 +46,12 @@ const CompanyCard = props => {
     <div className="">
       {jobData.map((info, index) => {
         return (
-          <div className="" style={{ margin: "25px 250px ", width: "40%" }}>
-            <Card className={classes.card} key={index}>
+          <div
+            className=""
+            style={{ margin: "25px 250px ", width: "40%" }}
+            key={index}
+          >
+            <Card className={classes.card}>
               <CardContent>
                 <Typography
                   // className={classes.title}
@@ -80,13 +84,51 @@ const CompanyCard = props => {
                 <Typography className={classes.pos} color="textSecondary">
                   {info.salary}
                 </Typography>
+
+                {info.appliedjobs.length !== 0 ? (
+                  <Typography>
+                    <Typography className={classes.pos} variant="h6">
+                      Students apply on this job
+                    </Typography>
+
+                    <Typography className={classes.pos} variant="h6">
+                      {info.appliedjobs.map(stuDetails => {
+                        return (
+                          <Typography
+                            className={classes.pos}
+                            color="textSecondary"
+                            style={{ display: "inline" }}
+                          >
+                            {stuDetails.userName} ,
+                          </Typography>
+                        );
+                      })}
+                    </Typography>
+                  </Typography>
+                ) : (
+                  <Typography>
+                    <Typography className={classes.pos} variant="h6">
+                      No Student apply on this job
+                    </Typography>
+
+                    <Typography className={classes.pos} variant="h6">
+                      {info.appliedjobs.userName}
+                    </Typography>
+                  </Typography>
+                )}
+
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  component="p"
+                ></Typography>
               </CardContent>
               <CardActions>
                 <Button
                   size="small"
                   variant="contained"
                   color="secondary"
-                  onClick={()=>props.delete(info.jobID)}
+                  onClick={() => props.delete(info.jobID)}
                 >
                   Delete
                 </Button>
