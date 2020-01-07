@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-
+import { signOut } from "../../Config/SignOut";
 import Navbar from "../Navbar/Navbar";
 import firebase from "firebase";
 import Card from "../Card/CompanyCard";
@@ -83,26 +83,26 @@ class Myjobs extends Component {
       });
   };
 
-  getPostData() {
-    this.getCurrentUser().then(currentUser => {
-      // console.log("currentUser", currentUser);
-      // db.ref()
-      //   .child(`jobs/`)
-      //   .once(`value`)
-      //   .then(snapshot => {
-      //     console.log(snapshot.val());
-      //     let response = snapshot.val();
-      //     let result = [];
-      //     for (const job in response) {
-      //       console.log("job key", job);
-      //       if (response[job].uid === currentUser)
-      //         result = [{ ...response[job], jobID: job }, ...result];
-      //     }
-      //     console.log("RESULT", result);
-      //     this.setState({ postsData: result });
-      //   });
-    });
-  }
+  // getPostData() {
+  //   this.getCurrentUser().then(currentUser => {
+  //     // console.log("currentUser", currentUser);
+  //     // db.ref()
+  //     //   .child(`jobs/`)
+  //     //   .once(`value`)
+  //     //   .then(snapshot => {
+  //     //     console.log(snapshot.val());
+  //     //     let response = snapshot.val();
+  //     //     let result = [];
+  //     //     for (const job in response) {
+  //     //       console.log("job key", job);
+  //     //       if (response[job].uid === currentUser)
+  //     //         result = [{ ...response[job], jobID: job }, ...result];
+  //     //     }
+  //     //     console.log("RESULT", result);
+  //     //     this.setState({ postsData: result });
+  //     //   });
+  //   });
+  // }
 
   getCurrentUser() {
     return new Promise((resolve, reject) => {
@@ -121,7 +121,7 @@ class Myjobs extends Component {
     console.log("getJobsData", getJobsData);
     return (
       <div>
-        <Navbar />
+        <Navbar signOut ={signOut} />
         <h2>My jObs</h2>
         <Card jobData={getJobsData} delete={this.deleteJobs} />
       </div>

@@ -75,16 +75,26 @@ function signInWithFirebase(email, password, cb) {
     });
 
   console.log(email, "signInWithFirebase 51");
-  // .catch(function(error) {
-  // Handle Errors here.
-  // var errorCode = error.code;
-  // var errorMessage = error.message;
-  // ...
+ 
 }
 
 
 
-async function logOut() {}
+//signOut
+  function logOut() {
+ 
+    var response =  firebase.auth().signOut();
+
+    setTimeout(() => {
+      window.location.assign("/");
+    }, 1000);
+
+    console.log("loggout");
+    return response;
+
+  
+}
+//signOut
 
 
 

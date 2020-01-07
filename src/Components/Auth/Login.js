@@ -3,12 +3,14 @@ import Navbar from "../Navbar/Navbar";
 import Swal from "sweetalert2";
 import { Link as Routerlink, Redirect } from "react-router-dom";
 import firebase from "../../Config/firebase";
+import { withRouter } from "react-router-dom";
 
 var roleType = {
   roleStudent: 10,
   roleCompany: 20,
   roleAdmin: 30
 };
+
 
 class Login extends Component {
   state = {
@@ -18,6 +20,39 @@ class Login extends Component {
     password: "",
     loc: "/"
   };
+
+  componentDidMount(){
+   let userObj = JSON.parse(localStorage.getItem("userID"))
+   
+   console.log("login page", userObj)
+   if(userObj){
+    let userNewObj = Number(userObj.userRole);
+    switch (userNewObj) {
+      case roleType.roleStudent: {
+        Swal.fire("Success", "Succesfully Login as student", "success");
+        this.props.history.push("/students");
+        break;
+      }
+      case roleType.roleCompany: {
+        console.log(" roleType.roleStudent");
+        Swal.fire("Success", "Succesfully Login as Company", "success");
+     
+        this.props.history.push("/company");
+        break;
+      }
+      case roleType.roleCompany: {
+        Swal.fire("Success", "Succesfully Login as student", "success");
+        this.props.history.push("/admin");
+        break;
+      }
+      default: {
+        console.log("default");
+      }
+  }
+}
+  }
+  
+
 
   showSignup = () => {
     this.setState({ signup: true });
@@ -30,6 +65,7 @@ class Login extends Component {
     });
   }
 
+ 
   onSubmit = () => {
     const { email, password } = this.state;
 
@@ -43,9 +79,11 @@ class Login extends Component {
         // console.log("userId", userId);
 
         if (userObj) {
+          let { password, ...toLocalStorage } = userObj;
           console.log("if userObj,uid");
-          localStorage.setItem("userID", userObj.uid);
+          localStorage.setItem("userID", JSON.stringify(toLocalStorage))
           let userNewObj = Number(userObj.userRole);
+
           switch (userNewObj) {
             case roleType.roleStudent: {
               Swal.fire("Success", "Succesfully Login as student", "success");
@@ -72,6 +110,11 @@ class Login extends Component {
           Swal.fire("Oops...", "Please signup first", "error");
         }
       });
+      var event = new CustomEvent("storage", { "detail": "Example of an event" });
+
+// Dispatch/Trigger/Fire the event
+window.dispatchEvent(event);
+
       console.log(userId);
     }
   };
@@ -79,7 +122,7 @@ class Login extends Component {
   renderLogin = () => {
     return (
       <div className="">
-        <Navbar />
+        <Navbar  />
         <form
           className="col s12 ml-4"
           style={{
@@ -150,4 +193,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);

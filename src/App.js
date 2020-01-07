@@ -14,37 +14,94 @@ import Myjobs from "./Components/Job/MyJobs";
 import Jobs from "./Components/Job/Jobs";
 import AllStudents from "./Components/Students/AllStudent";
 import AddStudentDetails from "./Components/Students/AddStudentDetails";
-// import AllStudents from "/Components/Students/Student";
+import UpdateStudentDetails from "./Components/Students/UpdateStudentDetails";
 import AllJobs from "./Components/Job/AllJobs";
 import AdminAllCompnies from "./Components/Admin/AdminAllCompanies";
 import AdminAllJobs from "./Components/Admin/AdminAllJobs";
 import AdminAllStudents from "./Components/Admin/AdminAllStudents";
 
 class App extends Component {
-  state = {};
+  constructor(props){
+    super(props);
+    window.addEventListener("storage",(e)=>{
+      this.forceUpdate()
+   })
+  }
+  
   render() {
+    let local = JSON.parse(localStorage.getItem("userID"));
+    console.log("LOCAL", local)
     return (
       <div className="App">
         <Router>
           <Switch>
-            <Route exact path="/" component={Login} />
+       
+            {local && local.userRole === 20 && (
+              <Route exact path="/company" component={CompanyProfile} />
+            )}
+            {local && local.userRole === 20 && (
+              <Route exact path="/jobs" component={Jobs} />
+            )}
+            {local && local.userRole === 20 && (
+              <Route exact path="/myjobs" component={Myjobs} />
+            )}
+            {local && local.userRole === 20 && (
+              <Route exact path="/allstudents" component={AllStudents} />
+            )}
+
+            {local && local.userRole === 10 && (
+              <Route exact path="/students" component={StudentProfile} />
+            )}
+            {local && local.userRole === 10 && (
+              <Route
+                exact
+                path="/addstudent/details"
+                component={AddStudentDetails}
+              />
+            )}
+
+            {local && local.userRole === 10 && (
+              <Route
+                exact
+                path="/updatestudent/details"
+                component={UpdateStudentDetails}
+              />
+            )}
+            {local && local.userRole === 10 && (
+              <Route exact path="/alljobs" component={AllJobs} />
+            )}
+
+            {local && local.userRole === 30 && (
+              <Route exact path="/admin" component={AdminProfile} />
+            )}
+            {local && local.userRole === 30 && (
+              <Route
+                exact
+                path="/admin/all/compnies"
+                component={AdminAllCompnies}
+              />
+            )}
+            {local && local.userRole === 30 && (
+              <Route
+                exacts
+                path="/admin/all/students"
+                component={AdminAllStudents}
+              />
+            )}
+            {local && local.userRole === 30 && (
+              <Route exact path="/admin" component={AdminProfile} />
+            )}
+            {local && local.userRole === 30 && (
+              <Route exact path="/admin/all/jobs" component={AdminAllJobs} />
+            )}
+
+            {/* {local && local.userRole === 30 && (
+              <React.Fragment></React.Fragment>
+            )} */}
+
             <Route exact path="/register" component={Register} />
-            <Route exact path="/admin" component={AdminProfile} />
-            <Route exact path="/company" component={CompanyProfile} />
-            <Route exact path="/jobs" component={Jobs} />
-            <Route exact path="/myjobs" component={Myjobs} />
-            <Route exact path="/allstudents" component={AllStudents} />
-            <Route exact path="/students" component={StudentProfile} />
-            <Route
-              exact
-              path="/addstudent/details"
-              component={AddStudentDetails}
-            />
-            <Route exact path="/alljobs" component={AllJobs} />
-            <Route exact path="/admin/all/compnies" component={AdminAllCompnies} />
-            <Route exact path="/admin/all/jobs" component={AdminAllJobs} />
-            <Route exact path="/admin/all/students" component={AdminAllStudents} />
-            
+            <Route path="/" component={Login} />
+          
           </Switch>
         </Router>
       </div>

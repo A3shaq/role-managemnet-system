@@ -107,7 +107,8 @@ class Register extends Component {
             }}
           />
         </div>
-        <div style={{ width: "30%" }}>
+        
+        <div style={{ width: "21%" }}>
           <Select
             // className="form-control inputLogin"
             placeholder="user Role"
@@ -117,6 +118,8 @@ class Register extends Component {
             options={options}
           />
         </div>
+    
+       
 
         <div className="loginBtn " style={{ marginTop: "30px" }}>
           <button type="submit" className="btn" onClick={() => this.signUp()}>

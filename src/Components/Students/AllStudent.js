@@ -3,6 +3,8 @@ import Navbar from "../Navbar/Navbar";
 import { withRouter } from "react-router-dom";
 // import Swal from "sweetalert2";
 import firebase from "firebase";
+import { signOut } from "../../Config/SignOut";
+import {roleType} from "../../Config/Constants";
 import Card from "../Card/AllStudentPlatFormCard";
 
 let db = firebase.database();
@@ -21,19 +23,36 @@ class AllStudents extends Component {
 
   getAllStudents = () => {
     db.ref()
-      .child(`students/`)
-      .once(`value`)
-      .then(students => {
-        console.log("students", students.val());
-        let stuData = students.val();
+      .child(`users/`)
+      .once("value")
+      .then(allUsers => {
+        allUsers = allUsers.val();
         let result = [];
-        for (let Student in stuData) {
-          result = [{ ...stuData[Student] }, ...result];
+        for (let user in allUsers) {
+          if (allUsers[user].userRole === roleType.roleStudent) {
+            result = [{ ...allUsers[user] }, ...result];
+          }
         }
         this.setState({
           studentsData: result
         });
       });
+
+    // db.ref()
+    //   .child(`students/`)
+    //   .once(`value`)
+    //   .then(students => {
+    //     console.log("students", students.val());
+    //     let stuData = students.val();
+    //     let result = [];
+    //     for (let Student in stuData) {
+    //       result = [{ ...stuData[Student] }, ...result];
+    //     }
+    //     this.setState({
+    //       studentsData: result
+    //     });
+    //   });
+    
   };
 
   render() {
@@ -41,7 +60,7 @@ class AllStudents extends Component {
     console.log("studentsData", studentsData);
     return (
       <div>
-        <Navbar />
+        <Navbar signOut ={signOut}/>
         <h2 className="adminHeading">All Students</h2>
         <Card allStudents={studentsData} />
       </div>

@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import Navbar from "../Navbar/Navbar";
-import { withRouter } from "react-router-dom";
 import Swal from "sweetalert2";
 import firebase from "firebase";
 import { signOut } from "../../Config/SignOut";
+
 let db = firebase.database();
 
-class AddStudentDetails extends Component {
+class UpdateStudentDetails extends Component {
   constructor() {
     super();
     this.state = {
@@ -15,103 +15,67 @@ class AddStudentDetails extends Component {
       currentDesignation: "",
       currentSalary: "",
       expectedSalary: "",
- 
+      btnFlag: false
     };
   }
 
   componentDidMount() {
-    // this.fetchStudents();
+    this.fetchStudents();
   }
   handleChange(e, key) {
     console.log("handleChange");
     this.setState({ [key]: e.target.value });
   }
-  // fetchStudents = () => {
-  //   // let stuId = firebase.auth().currentUser.uid;
-  //   let stuId = localStorage.getItem("userID");
-  //   this.getStudentsForUpdate(stuId).then(stuDetails => {
-  //     console.log("stuDetails", stuDetails);
-  //     this.setState({
-  //       studExperience: stuDetails.studExperience,
-  //       skills: stuDetails.skills,
-  //       currentDesignation: stuDetails.currentDesignation,
-  //       currentSalary: stuDetails.currentSalary,
-  //       expectedSalary: stuDetails.expectedSalary
-  //     });
-  //   });
-  // };
+  fetchStudents = () => {
+    // let stuId = firebase.auth().currentUser.uid;
+    let stuId = JSON.parse(localStorage.getItem("userID")) ;
+    stuId =stuId.uid
+    console.log("stuId",stuId,)
+    this.getStudentsForUpdate(stuId).then(stuDetails => {
+      console.log("stuDetails", stuDetails);
+      this.setState({
+        studExperience: stuDetails.studExperience,
+        skills: stuDetails.skills,
+        currentDesignation: stuDetails.currentDesignation,
+        currentSalary: stuDetails.currentSalary,
+        expectedSalary: stuDetails.expectedSalary
+      });
+    });
+  };
 
-  // getUpdateStudentDetails = async () => {
-  //   let stuId = firebase.auth().currentUser.uid;
-  //   console.log("userID", stuId);
-  //   let stuDetails = await this.getStudentsForUpdate(stuId);
-  //   if (stuDetails !== false) {
-  //     console.log("able to update");
+  UpdateStudentDetails = async () => {
+    let stuId = firebase.auth().currentUser.uid;
+    console.log("userID", stuId);
+    let stuDetails = await this.getStudentsForUpdate(stuId);
+    if (stuDetails !== false) {
+      console.log("able to update");
 
-  //     let {
-  //       studExperience,
-  //       skills,
-  //       currentDesignation,
-  //       currentSalary,
-  //       expectedSalary
-  //     } = this.state;
-  //   } else {
-  //     Swal.fire(
-  //       "Student",
-  //       "You didn't fill your details please fill it",
-  //       "warning"
-  //     );
-  //   }
-  // };
+      let {
+        studExperience,
+        skills,
+        currentDesignation,
+        currentSalary,
+        expectedSalary
+      } = this.state;
 
-  // getStudentsForUpdate = stuId => {
-  //   return db
-  //     .ref()
-  //     .child("students/")
-  //     .once("value")
-  //     .then(students => {
-  //       students = students.val();
-  //       let stuDetails;
-  //       for (let student in students) {
-  //         if (students[student].uid === stuId) {
-  //           stuDetails = { ...students[student] };
-  //           // return false;
-  //         }
-  //       }
-  //       return stuDetails;
-  //     });
-  // };
-
-  addStudentDetails = async () => {
-    let {
-      studExperience,
-      skills,
-      currentDesignation,
-      currentSalary,
-      expectedSalary
-    } = this.state;
-
-    if (
-      studExperience === "" ||
-      skills === "" ||
-      currentDesignation === "" ||
-      currentSalary === "" ||
-      expectedSalary === ""
-    ) {
-      Swal.fire("Oops...", "please fill the empty fields", "error");
-    } else {
-      let user = firebase.auth().currentUser.uid;
-      console.log("userID", user);
-      let getStudentDetail = await this.getStudents(user);
-      console.log("getStudentDetail", getStudentDetail);
-      if (getStudentDetail === true) {
+      if (
+        studExperience === "" ||
+        skills === "" ||
+        currentDesignation === "" ||
+        currentSalary === "" ||
+        expectedSalary === ""
+      ) {
+        Swal.fire("Oops...", "please fill the empty fields", "error");
+      } else {
+        let user = firebase.auth().currentUser.uid;
+        console.log("userID", user);
         db.ref()
           .child(`users/${user}`)
           .once(`value`)
           .then(currentUserData => {
             console.log("currentUserData.val()", currentUserData.val());
             let userData = currentUserData.val();
-            let stuDetails = {
+            let stuInfo = {
               studExperience,
               skills,
               currentDesignation,
@@ -121,14 +85,15 @@ class AddStudentDetails extends Component {
               userName: userData.userName,
               email: userData.email
             };
-
+            console.log("stuInfo", stuInfo);
+            console.log(stuDetails);
             db.ref()
-              .child(`students`)
-              .push(stuDetails)
+              .child(`students/${stuDetails.student}`)
+              .update(stuInfo)
               .then(() => {
                 Swal.fire(
                   "Success",
-                  "Student Added Deteils Successfully",
+                  "Student Details updated Successfully",
                   "success"
                 );
               });
@@ -141,29 +106,33 @@ class AddStudentDetails extends Component {
             });
             this.props.history.push("/students");
           });
-      } else {
-        Swal.fire(
-          "Oops...",
-          "this student details is already exist",
-          "warning"
-        );
       }
+    } else {
+      Swal.fire(
+        "Student",
+        "You didn't fill your details please fill it",
+        "warning"
+      );
     }
   };
 
-  getStudents = stuId => {
+  getStudentsForUpdate = stuId => {
     return db
       .ref()
       .child("students/")
       .once("value")
       .then(students => {
         students = students.val();
+        let stuDetails;
         for (let student in students) {
           if (students[student].uid === stuId) {
-            return false;
+            stuDetails = { ...students[student], student };
+            console.log("...st", student);
+            // return false;
+            return stuDetails;
           }
         }
-        return true;
+        // return stuDetails;
       });
   };
 
@@ -171,7 +140,7 @@ class AddStudentDetails extends Component {
     console.log(this.state);
     return (
       <div>
-        <Navbar signOut = {signOut}/>
+        <Navbar signOut ={signOut} />
         <h2 className="adminHeading">Student Dashboard</h2>
 
         <div className="row">
@@ -239,13 +208,13 @@ class AddStudentDetails extends Component {
           className="btn waves-effect waves-light"
           type="submit"
           name="action"
-          onClick={this.addStudentDetails}
+          onClick={this.UpdateStudentDetails}
         >
-          Add Student Details
+          Update Student Details
         </button>
       </div>
     );
   }
 }
 
-export default withRouter(AddStudentDetails);
+export default UpdateStudentDetails;

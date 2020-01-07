@@ -4,6 +4,8 @@ import Navbar from "../Navbar/Navbar";
 import Swal from "sweetalert2";
 import firebase from "firebase";
 import { withRouter } from "react-router-dom";
+import { signOut } from "../../Config/SignOut";
+
 
 class Jobs extends Component {
   constructor() {
@@ -76,7 +78,7 @@ class Jobs extends Component {
   render() {
     return (
       <div>
-        <Navbar />
+        <Navbar signOut ={signOut} />
 
         <h2 className="adminHeading">Post a Job</h2>
         <div className="row">

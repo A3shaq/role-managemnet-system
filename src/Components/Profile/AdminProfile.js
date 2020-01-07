@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Navbar from "../Navbar/Navbar";
 import { withRouter } from "react-router-dom";
+import { signOut } from "../../Config/SignOut";
 
 class AdminProfile extends Component {
   constructor() {
@@ -26,7 +27,7 @@ allStudents =()=>{
   render() {
     return (
       <div>
-        <Navbar />
+        <Navbar signOut={signOut} />
         <h2 className="adminHeading">Admin Profile</h2>
 
         <div className="row">

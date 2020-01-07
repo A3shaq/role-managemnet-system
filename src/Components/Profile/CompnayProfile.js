@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Navbar from "../Navbar/Navbar";
 // import Modal from '@material-ui/core/Modal';
 import { withRouter } from "react-router-dom";
+import { signOut } from "../../Config/SignOut";
 
 
 
@@ -19,7 +20,7 @@ class CompanyProfile extends Component {
     return (
       <div>
         {/* {this.renderPostJobs()} */}
-        <Navbar />
+        <Navbar  signOut ={signOut}/>
         <h2 className="adminHeading">Company Dashboard</h2>
 
         <div className="row"> 

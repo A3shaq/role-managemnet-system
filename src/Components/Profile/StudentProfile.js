@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import Navbar from "../Navbar/Navbar";
 // import Modal from '@material-ui/core/Modal';
 import { withRouter } from "react-router-dom";
-
+// import firebase from "../../Config/firebase";
+import { signOut } from "../../Config/SignOut";
 class StudentProfile extends Component {
   addDetails = () => {
     this.props.history.push("/addstudent/details");
@@ -11,14 +12,18 @@ class StudentProfile extends Component {
     console.log("allJobs");
     this.props.history.push("/alljobs");
   };
-  // allStudents =()=>{
-  //   this.props.history.push("/allstudents")
-  // }
+  studentProfile = () => {
+    this.props.history.push("/updatestudent/details");
+  };
+
+ 
+
+  //
   render() {
     return (
       <div>
         {/* {this.renderPostJobs()} */}
-        <Navbar />
+        <Navbar signOut={signOut} />
         <h2 className="adminHeading">Student Dashboard</h2>
 
         <div className="row">
@@ -39,9 +44,9 @@ class StudentProfile extends Component {
               className="btn waves-effect waves-light"
               type="submit"
               name="action"
-              // onClick={this.addDetails}
+              onClick={this.studentProfile}
             >
-              Student Profile
+              Update Profile
               <i className="material-icons right"></i>
             </button>
           </div>

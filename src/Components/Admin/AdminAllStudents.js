@@ -4,6 +4,7 @@ import Navbar from "../Navbar/Navbar";
 import firebase from "firebase";
 import Card from "../Card/AdminCard/AdminCardForAllStudents";
 import Swal from "sweetalert2";
+import { signOut } from "../../Config/SignOut";
 
 let db = firebase.database();
 
@@ -102,7 +103,7 @@ class AdminAllStudents extends Component {
     let { allStudents } = this.state;
     return (
       <div>
-        <Navbar />
+        <Navbar  signOut={signOut} />
         <h2 className="adminHeading">All Students</h2>
         <Card allStudents={allStudents} deleteStudent={this.deleteStudent} />
       </div>

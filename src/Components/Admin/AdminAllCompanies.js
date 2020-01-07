@@ -5,6 +5,7 @@ import firebase from "firebase";
 import Card from "../Card/AdminCard/AdminCardForAllCompanies";
 import Swal from "sweetalert2";
 import { roleType } from "../../Config/Constants";
+import { signOut } from "../../Config/SignOut";
 
 let db = firebase.database();
 
@@ -119,7 +120,7 @@ class AdminAllCompanies extends Component {
     console.log("companies", allCompanies);
     return (
       <div>
-        <Navbar />
+        <Navbar signOut={signOut}  />
         <h2 className="adminHeading">All Companies</h2>
         <Card companies={allCompanies} deleteCompanies={this.deleteCompany} />
       </div>
