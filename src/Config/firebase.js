@@ -2,14 +2,7 @@ import * as firebase from "firebase";
 import Swal from "sweetalert2";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBPHcNful2eM0CtwXI7Mk-cHJ5iWheGCE0",
-  authDomain: "role-management-system.firebaseapp.com",
-  databaseURL: "https://role-management-system.firebaseio.com",
-  projectId: "role-management-system",
-  storageBucket: "role-management-system.appspot.com",
-  messagingSenderId: "856696811551",
-  appId: "1:856696811551:web:87125fd51fdd353d5de52a",
-  measurementId: "G-CXED5YD6GS"
+  // firebase config here
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
