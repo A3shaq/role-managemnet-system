@@ -30,24 +30,27 @@ class UpdateStudentDetails extends Component {
     // let stuId = firebase.auth().currentUser.uid;
     let stuId = JSON.parse(localStorage.getItem("userID")) ;
     stuId =stuId.uid
-    console.log("stuId",stuId,)
+    console.log("stuId",stuId)
+
     this.getStudentsForUpdate(stuId).then(stuDetails => {
       console.log("stuDetails", stuDetails);
-      this.setState({
-        studExperience: stuDetails.studExperience,
-        skills: stuDetails.skills,
-        currentDesignation: stuDetails.currentDesignation,
-        currentSalary: stuDetails.currentSalary,
-        expectedSalary: stuDetails.expectedSalary
-      });
+      // this.setState({
+      //   studExperience: stuDetails.studExperience,
+      //   skills: stuDetails.skills,
+      //   currentDesignation: stuDetails.currentDesignation,
+      //   currentSalary: stuDetails.currentSalary,
+      //   expectedSalary: stuDetails.expectedSalary
+      // });
     });
+
   };
 
   UpdateStudentDetails = async () => {
     let stuId = firebase.auth().currentUser.uid;
     console.log("userID", stuId);
     let stuDetails = await this.getStudentsForUpdate(stuId);
-    if (stuDetails !== false) {
+    console.log("stuDetails",stuDetails)
+    if (Object.keys(stuDetails).length) {
       console.log("able to update");
 
       let {
@@ -123,7 +126,7 @@ class UpdateStudentDetails extends Component {
       .once("value")
       .then(students => {
         students = students.val();
-        let stuDetails;
+        let stuDetails={};
         for (let student in students) {
           if (students[student].uid === stuId) {
             stuDetails = { ...students[student], student };
@@ -132,7 +135,7 @@ class UpdateStudentDetails extends Component {
             return stuDetails;
           }
         }
-        // return stuDetails;
+        return stuDetails;
       });
   };
 

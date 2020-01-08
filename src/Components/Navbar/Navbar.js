@@ -14,7 +14,7 @@ class Navbar extends Component {
           className="nav-wrapper"
           style={{ display: "", justifyContent: "center" }}
         >
-          <a href="/" className="brand-logo">
+          <a href="/" className="brand-logo" >
             Role Management System
           </a>
           {this.props.signOut ? (

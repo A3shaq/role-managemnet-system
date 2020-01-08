@@ -42,7 +42,7 @@ function signUpWithFirebase(userName, email, password, role) {
   console.log(userName);
 }
 
-function signInWithFirebase(email, password, cb) {
+ function signInWithFirebase(email, password, cb) {
   console.log(email, password, "signInWithFirebase");
 
   firebase

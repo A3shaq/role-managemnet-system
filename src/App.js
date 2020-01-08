@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
-  withRouter
+  withRouter,
 } from "react-router-dom";
 import Login from "./Components/Auth/Login";
 import Register from "./Components/Auth/Register";
@@ -36,64 +36,65 @@ class App extends Component {
         <Router>
           <Switch>
        
-            {local && local.userRole === 20 && (
+            {/* {local && local.userRole === 20 && ( */}
               <Route exact path="/company" component={CompanyProfile} />
-            )}
-            {local && local.userRole === 20 && (
+             
+            {/* // )} */}
+            {/* {local && local.userRole === 20 && ( */}
               <Route exact path="/jobs" component={Jobs} />
-            )}
-            {local && local.userRole === 20 && (
+            {/* )} */}
+            {/* {local && local.userRole === 20 && ( */}
               <Route exact path="/myjobs" component={Myjobs} />
-            )}
-            {local && local.userRole === 20 && (
+            {/* )} */}
+            {/* {local && local.userRole === 20 && ( */}
               <Route exact path="/allstudents" component={AllStudents} />
-            )}
+            {/* )} */}
 
-            {local && local.userRole === 10 && (
+            {/* {local && local.userRole === 10 && ( */}
               <Route exact path="/students" component={StudentProfile} />
-            )}
-            {local && local.userRole === 10 && (
+            {/* )} */}
+            {/* {local && local.userRole === 10 && ( */}
               <Route
                 exact
                 path="/addstudent/details"
                 component={AddStudentDetails}
               />
-            )}
+            {/* )} */}
 
-            {local && local.userRole === 10 && (
+            {/* {local && local.userRole === 10 && ( */}
               <Route
                 exact
                 path="/updatestudent/details"
                 component={UpdateStudentDetails}
               />
-            )}
-            {local && local.userRole === 10 && (
+            {/* )} */}
+            {/* {local && local.userRole === 10 && ( */}
               <Route exact path="/alljobs" component={AllJobs} />
-            )}
+            {/* )} */}
 
-            {local && local.userRole === 30 && (
+            {/* {local && local.userRole === 30 && ( */}
               <Route exact path="/admin" component={AdminProfile} />
-            )}
-            {local && local.userRole === 30 && (
+            {/* )} */}
+            {/* {local && local.userRole === 30 && ( */}
               <Route
                 exact
                 path="/admin/all/compnies"
                 component={AdminAllCompnies}
               />
-            )}
-            {local && local.userRole === 30 && (
+            {/* )} */}
+            {/* {local && local.userRole === 30 && ( */}
               <Route
                 exacts
                 path="/admin/all/students"
                 component={AdminAllStudents}
               />
-            )}
-            {local && local.userRole === 30 && (
+            {/* )} */}
+            {/* {local && local.userRole === 30 && ( */}
               <Route exact path="/admin" component={AdminProfile} />
-            )}
-            {local && local.userRole === 30 && (
+            {/* )} */}
+            {/* {local && local.userRole === 30 && ( */}
               <Route exact path="/admin/all/jobs" component={AdminAllJobs} />
-            )}
+            {/* )} */}
 
             {/* {local && local.userRole === 30 && (
               <React.Fragment></React.Fragment>

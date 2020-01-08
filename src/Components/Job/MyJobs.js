@@ -16,7 +16,6 @@ class Myjobs extends Component {
     };
   }
   componentDidMount() {
-    // this.getPostData();
     this.getMyJobs();
   }
 
@@ -28,8 +27,33 @@ class Myjobs extends Component {
       .then(() => {
         Swal.fire("Company", "Job Post Has been Deleted", "success");
       });
-    // this.getPostData();
+    this.deleteAppliedjobs(jobID);
+
     this.getMyJobs();
+  };
+
+  deleteAppliedjobs = jobID => {
+    console.log("deleteAppliedjobs", jobID);
+    db.ref()
+      .child(`appliedJobs/`)
+      .once("value")
+      .then(appliedJobs => {
+        appliedJobs = appliedJobs.val();
+        console.log("appliedJobs", appliedJobs);
+        for (let apply in appliedJobs) {
+          if (appliedJobs[apply].jobID === jobID) {
+            console.log("deletd job from applied node");
+            db.ref()
+              .child(`appliedJobs/${apply}`)
+              .remove()
+              .then(() => {
+                console.log("`appliedJobs/${apply}`");
+              });
+          } else {
+            console.log("No user applied on this job");
+          }
+        }
+      });
   };
 
   getMyJobs = () => {
@@ -83,27 +107,6 @@ class Myjobs extends Component {
       });
   };
 
-  // getPostData() {
-  //   this.getCurrentUser().then(currentUser => {
-  //     // console.log("currentUser", currentUser);
-  //     // db.ref()
-  //     //   .child(`jobs/`)
-  //     //   .once(`value`)
-  //     //   .then(snapshot => {
-  //     //     console.log(snapshot.val());
-  //     //     let response = snapshot.val();
-  //     //     let result = [];
-  //     //     for (const job in response) {
-  //     //       console.log("job key", job);
-  //     //       if (response[job].uid === currentUser)
-  //     //         result = [{ ...response[job], jobID: job }, ...result];
-  //     //     }
-  //     //     console.log("RESULT", result);
-  //     //     this.setState({ postsData: result });
-  //     //   });
-  //   });
-  // }
-
   getCurrentUser() {
     return new Promise((resolve, reject) => {
       firebase.auth().onAuthStateChanged(function(user) {
@@ -121,7 +124,7 @@ class Myjobs extends Component {
     console.log("getJobsData", getJobsData);
     return (
       <div>
-        <Navbar signOut ={signOut} />
+        <Navbar signOut={signOut} />
         <h2>My jObs</h2>
         <Card jobData={getJobsData} delete={this.deleteJobs} />
       </div>

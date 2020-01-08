@@ -38,20 +38,7 @@ class AllStudents extends Component {
         });
       });
 
-    // db.ref()
-    //   .child(`students/`)
-    //   .once(`value`)
-    //   .then(students => {
-    //     console.log("students", students.val());
-    //     let stuData = students.val();
-    //     let result = [];
-    //     for (let Student in stuData) {
-    //       result = [{ ...stuData[Student] }, ...result];
-    //     }
-    //     this.setState({
-    //       studentsData: result
-    //     });
-    //   });
+  
     
   };
 

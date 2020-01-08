@@ -17,7 +17,7 @@ class Register extends Component {
       userName: "",
       userEmail: "",
       userPassword: "",
-      selectedRole: null,
+      selectedRole: 0,
       loc: "/register"
     };
   }
@@ -28,7 +28,7 @@ class Register extends Component {
   };
 
   handleChange(e, key) {
-    console.log("handletextChnageeeeeeeeee", key);
+    // console.log("handletextChnageeeeeeeeee", key);
     this.setState({
       [key]: e.target.value
     });
@@ -43,9 +43,10 @@ class Register extends Component {
       userName === "" ||
       userEmail === "" ||
       userPassword === "" ||
-      role === null
+      role === 0  
     ) {
       Swal.fire("Oops...", "please fill the empty fields", "error");
+      this.props.history.push('/register')
     } else {
       console.log("signUp else");
 
@@ -134,9 +135,7 @@ class Register extends Component {
 
   render() {
     console.log(this.state.selectedRole);
-    // if (localStorage.isAuthenticated) {
-    //   return <Redirect to="/home" />;
-    // }
+   
     return (
       <div>
         {this.renderRegister()}

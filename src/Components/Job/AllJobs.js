@@ -167,7 +167,7 @@ class AllJobs extends Component {
             if(alreadyApplied) {
               Swal.fire(
                 "Warning",
-                "You aleardy applied for this job",
+                "You aleardy applied on this job",
                 "warning"
               );
             }

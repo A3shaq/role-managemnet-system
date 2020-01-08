@@ -4,6 +4,7 @@ import Navbar from "../Navbar/Navbar";
 import firebase from "firebase";
 import Card from "../Card/AdminCard/AdminCardForAllStudents";
 import Swal from "sweetalert2";
+import {roleType} from "../../Config/Constants";
 import { signOut } from "../../Config/SignOut";
 
 let db = firebase.database();
@@ -84,18 +85,34 @@ class AdminAllStudents extends Component {
   //  delete student info from students node
 
   getAllStudents() {
+    // db.ref()
+    //   .child(`students/`)
+    //   .once("value")
+    //   .then(students => {
+    //     students = students.val();
+    //     let result = [];
+    //     console.log("students", students);
+    //     // result = [{ ...students }, result];
+    //     for (let student in students) {
+    //       result = [{ ...students[student] }, ...result];
+    //     }
+    //     this.setState({ allStudents: result });
+    //   });
+
     db.ref()
-      .child(`students/`)
+      .child(`users/`)
       .once("value")
       .then(students => {
         students = students.val();
         let result = [];
-        console.log("students", students);
-        // result = [{ ...students }, result];
         for (let student in students) {
-          result = [{ ...students[student] }, ...result];
+          if (students[student].userRole === roleType.roleStudent) {
+            result = [{ ...students[student] }, ...result];
+          }
         }
-        this.setState({ allStudents: result });
+        this.setState({
+          allStudents: result
+        });
       });
   }
 
@@ -103,7 +120,7 @@ class AdminAllStudents extends Component {
     let { allStudents } = this.state;
     return (
       <div>
-        <Navbar  signOut={signOut} />
+        <Navbar signOut={signOut} />
         <h2 className="adminHeading">All Students</h2>
         <Card allStudents={allStudents} deleteStudent={this.deleteStudent} />
       </div>

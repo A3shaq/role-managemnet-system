@@ -2,12 +2,26 @@ import React, { Component } from "react";
 import Navbar from "../Navbar/Navbar";
 import { withRouter } from "react-router-dom";
 import { signOut } from "../../Config/SignOut";
+import { roleType } from "../../Config/Constants";
 
 class AdminProfile extends Component {
-  constructor() {
-    super();
-    this.state = {};
+ componentDidMount(){
+  let user = JSON.parse(localStorage.getItem("userID"));
+  if (user && user.userRole) {
+    if (user.userRole === roleType.roleAdmin) {
+      this.props.history.push("/admin");
+    } else {
+      if (user.userRole === roleType.roleStudent) {
+        // return <Redirect to="/jobs" />;
+        this.props.history.push("/students");
+        return;
+      } else if (user.userRole === roleType.roleCompany) {
+        this.props.history.push("/company");
+        return;
+      }
+    }
   }
+ }
 
   allCompanies =()=>{
       this.props.history.push('/admin/all/compnies')
